@@ -2,6 +2,10 @@ package com.bluelife.mm.hipdaforum;
 
 import android.content.Context;
 
+import com.bluelife.mm.hipdaforum.executor.PostExecutionThread;
+import com.bluelife.mm.hipdaforum.executor.ThreadExecutor;
+import com.bluelife.mm.hipdaforum.utils.AppScope;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,8 +21,18 @@ public final class ApplicationModule {
         mContext = context;
     }
 
-    @Provides
-    Context provideContext() {
+    @Provides @AppScope
+    Context provideApp() {
         return mContext;
     }
+
+    @Provides @AppScope
+    PostExecutionThread provideUiThread(UIThread uiThread){
+        return uiThread;
+    }
+    @Provides @AppScope
+    ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor){
+        return jobExecutor;
+    }
+
 }

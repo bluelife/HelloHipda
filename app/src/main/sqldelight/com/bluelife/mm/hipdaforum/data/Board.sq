@@ -1,0 +1,9 @@
+CREATE TABLE board (
+  _id LONG NOT NULL PRIMARY KEY AUTOINCREMENT,
+  url STRING NOT NULL,
+  name STRING NOT NULL,
+  exp STRING NOT NULL,
+  postCountDay STRING NOT NULL
+);
+select_all:
+SELECT * FROM board;

@@ -1,6 +1,7 @@
 package com.bluelife.mm.hipdaforum.data.source;
 
 import com.bluelife.mm.hipdaforum.data.Board;
+import com.bluelife.mm.hipdaforum.data.Thread;
 
 import java.util.List;
 
@@ -12,5 +13,9 @@ import rx.Observable;
 public interface ForumDataSource {
 
     Observable<List<Board>> getBoards();
+
+    Observable<List<Thread>> getThreads();
+
+    void saveBoard(Board board);
 
 }

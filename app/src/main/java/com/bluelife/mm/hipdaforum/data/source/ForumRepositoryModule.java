@@ -18,8 +18,8 @@ public class ForumRepositoryModule {
     @Singleton
     @Provides
     @Local
-    ForumDataSource providerForumLocalSource(Context context){
-        return new ForumLocalSource(context);
+    ForumDataSource providerForumLocalSource(){
+        return new ForumLocalSource();
     }
 
     @Singleton
