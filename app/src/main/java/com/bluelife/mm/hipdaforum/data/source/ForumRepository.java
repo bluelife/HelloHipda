@@ -1,5 +1,7 @@
 package com.bluelife.mm.hipdaforum.data.source;
 
+import android.util.Log;
+
 import com.bluelife.mm.hipdaforum.data.Board;
 import com.bluelife.mm.hipdaforum.data.Thread;
 
@@ -22,7 +24,7 @@ public class ForumRepository implements ForumDataSource {
     private List<Board> cachedBoards;
     private List<Thread> cachedThreads;
     @Inject
-    public ForumRepository(@Remote ForumDataSource forumLocalSource, @Local ForumDataSource forumRemoteSource) {
+    public ForumRepository(@Local ForumDataSource forumLocalSource, @Remote ForumDataSource forumRemoteSource) {
         this.forumLocalSource = forumLocalSource;
         this.forumRemoteSource = forumRemoteSource;
         cachedBoards=new ArrayList<>();
@@ -33,15 +35,17 @@ public class ForumRepository implements ForumDataSource {
 
     @Override
     public Observable<List<Board>> getBoards() {
-        Observable<List<Board>> cachedBoradsObservable=Observable.from(cachedBoards).toList();
+        Observable<List<Board>> cachedBoradsObservable=cachedBoards.size()==0?Observable.empty():Observable.from(cachedBoards).toList();
         Observable<List<Board>> localBoards=forumLocalSource.getBoards();
         Observable<List<Board>> remoteBoards=forumRemoteSource.getBoards();
         Observable<List<Board>> remoteBoardsWithLocalUpdate=remoteBoards
                 .flatMap(Observable::from).doOnNext(board -> {
                     cachedBoards.add(board);
                     forumLocalSource.saveBoard(board);
+                    System.out.println("dddd");
                 }).toList();
         return Observable.concat(cachedBoradsObservable,localBoards,remoteBoardsWithLocalUpdate).first();
+        //return remoteBoardsWithLocalUpdate;
     }
 
     @Override

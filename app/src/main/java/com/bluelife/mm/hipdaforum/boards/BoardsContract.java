@@ -13,6 +13,7 @@ public interface BoardsContract {
     interface View{
 
         void showProgress();
+        void hideProgress();
         void showLoadingError(String error);
         void showBoards(List<Board> boards);
     }

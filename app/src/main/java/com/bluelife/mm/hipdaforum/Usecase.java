@@ -14,11 +14,11 @@ import rx.subscriptions.Subscriptions;
  */
 public abstract class UseCase<Q extends UseCase.RequestValues> {
     private Q mRequestValues;
-    private final ThreadExecutor threadExecutor;
+    private final JobExecutor threadExecutor;
     private final PostExecutionThread postExecutionThread;
     private Subscription subscription = Subscriptions.empty();
 
-    public UseCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public UseCase(JobExecutor threadExecutor, UIThread postExecutionThread) {
         this.threadExecutor = threadExecutor;
         this.postExecutionThread = postExecutionThread;
     }

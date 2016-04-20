@@ -2,6 +2,7 @@ package com.bluelife.mm.hipdaforum;
 
 import com.bluelife.mm.hipdaforum.executor.PostExecutionThread;
 import com.bluelife.mm.hipdaforum.executor.ThreadExecutor;
+import com.bluelife.mm.hipdaforum.utils.FragmentScope;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,7 +13,8 @@ import rx.android.schedulers.AndroidSchedulers;
 /**
  * Created by slomka.jin on 2016/4/14.
  */
-@Singleton
+
+@FragmentScope
 public class UIThread implements PostExecutionThread {
     @Inject
     UIThread(){

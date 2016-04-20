@@ -1,6 +1,7 @@
 package com.bluelife.mm.hipdaforum;
 
 import com.bluelife.mm.hipdaforum.executor.ThreadExecutor;
+import com.bluelife.mm.hipdaforum.utils.FragmentScope;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -15,8 +16,8 @@ import javax.inject.Singleton;
 /**
  * Created by slomka.jin on 2016/4/11.
  */
-@Singleton
-public class JobExecutor implements ThreadExecutor {
+@FragmentScope
+public class JobExecutor implements Executor {
 
     private static final int INITIAL_POOL_SIZE = 3;
     private static final int MAX_POOL_SIZE = 5;

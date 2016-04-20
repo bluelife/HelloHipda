@@ -43,7 +43,8 @@ public class ForumRemoteSource implements ForumDataSource {
         Observable<List<Board>> boards=forumService.getForumApi().getBoards()
                 .flatMap(body -> {
                     try {
-                        return boardsMapper.transform(body);
+                        String html=StringFormat.fromGBK(body);
+                        return boardsMapper.transform(html);
                     } catch (IOException e) {
                         e.printStackTrace();
                         return Observable.error(e);
@@ -62,7 +63,8 @@ public class ForumRemoteSource implements ForumDataSource {
         Observable<List<Thread>> threads=forumService.getForumApi().getThreads()
                 .flatMap(body -> {
                     try {
-                        return threadMapper.transform(body);
+                        String html=StringFormat.fromGBK(body);
+                        return threadMapper.transform(html);
                     }
                     catch (IOException e){
                         e.printStackTrace();

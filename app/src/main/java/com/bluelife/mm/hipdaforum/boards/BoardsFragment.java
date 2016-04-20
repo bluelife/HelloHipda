@@ -3,15 +3,21 @@ package com.bluelife.mm.hipdaforum.boards;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.bluelife.mm.hipdaforum.HipdaApp;
 import com.bluelife.mm.hipdaforum.R;
 import com.bluelife.mm.hipdaforum.data.Board;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -19,6 +25,14 @@ import butterknife.ButterKnife;
  */
 public class BoardsFragment extends Fragment implements BoardsContract.View{
 
+    @Bind(R.id.boards_list)
+    RecyclerView boardsListView;
+    @Bind(R.id.boards_bar)
+    ProgressBar progressBar;
+    @Bind(R.id.load_error_layout)
+    LinearLayout loadErrorLayout;
+    @Bind(R.id.error_txt)
+    TextView errorText;
     private BoardsContract.Present present;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,12 +71,20 @@ public class BoardsFragment extends Fragment implements BoardsContract.View{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        present=DaggerBoardFragmentComponent.builder().boardsFragmentModule(new BoardsFragmentModule(this))
+                .forumRepositoryComponent(((HipdaApp)getActivity().getApplication()).getForumRepositoryComponent())
+                .build()
+                .getBoardsPresent();
     }
 
     @Override
     public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -72,6 +94,7 @@ public class BoardsFragment extends Fragment implements BoardsContract.View{
 
     @Override
     public void showLoadingError(String error) {
-
+        loadErrorLayout.setVisibility(View.VISIBLE);
+        errorText.setText(error);
     }
 }

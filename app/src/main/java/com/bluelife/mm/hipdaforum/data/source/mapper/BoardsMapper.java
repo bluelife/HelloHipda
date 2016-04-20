@@ -22,9 +22,10 @@ import rx.Observable;
  */
 public class BoardsMapper implements DataMapper<List<Board>> {
     @Override
-    public Observable<List<Board>> transform(ResponseBody body) throws IOException{
-            String html= StringFormat.fromGBK(body);
-        Document document= Jsoup.parse(html);
+    public Observable<List<Board>> transform(String body) throws IOException{
+
+        Document document= Jsoup.parse(body);
+
         Elements boardElements=document.select("div[class=mainbox list]");
         List<Board> boardList=new ArrayList<>();
         for (int i = 0; i < boardElements.size(); i++) {
@@ -40,10 +41,9 @@ public class BoardsMapper implements DataMapper<List<Board>> {
                 String nums=board.select("td[class=forumnums]").text();
                 String count=board.select("h2 em strong").text();
                 Board boardItem=Board.create(j,url,title,exp,count);
-                Log.w("ttt",title+"  "+exp+" "+nums);
                 boardList.add(boardItem);
             }
         }
-        return Observable.from(boardList).toList();
+        return Observable.just(boardList);
     }
 }

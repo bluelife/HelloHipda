@@ -7,6 +7,6 @@ import dagger.Module;
  * Created by slomka.jin on 2016/4/14.
  */
 @Component(modules = ApplicationModule.class)
-public class ApplicationComponent {
+public interface ApplicationComponent {
 
 }

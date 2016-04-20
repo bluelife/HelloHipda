@@ -9,5 +9,5 @@ import rx.Observable;
  * Created by slomka.jin on 2016/4/12.
  */
 public interface DataMapper<T> {
-    Observable<T> transform(ResponseBody body) throws IOException;
+    Observable<T> transform(String txt) throws IOException;
 }

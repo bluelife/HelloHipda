@@ -1,5 +1,7 @@
 package com.bluelife.mm.hipdaforum.boards.usecase;
 
+import com.bluelife.mm.hipdaforum.JobExecutor;
+import com.bluelife.mm.hipdaforum.UIThread;
 import com.bluelife.mm.hipdaforum.UseCase;
 import com.bluelife.mm.hipdaforum.data.source.ForumRepository;
 import com.bluelife.mm.hipdaforum.executor.PostExecutionThread;
@@ -15,9 +17,9 @@ import rx.Observable;
 public class GetBoards extends UseCase<GetBoards.RequestValues> {
 
     @Inject
-    private ForumRepository forumRepository;
-
-    public GetBoards(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    ForumRepository forumRepository;
+    @Inject
+    public GetBoards(JobExecutor threadExecutor, UIThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
     }
 

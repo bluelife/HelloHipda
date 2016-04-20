@@ -18,9 +18,8 @@ import rx.Observable;
  */
 public class ThreadMapper implements DataMapper<List<Thread>> {
     @Override
-    public Observable<List<Thread>> transform(ResponseBody body) throws IOException {
-        String html= StringFormat.fromGBK(body);
-        Document document= Jsoup.parse(html);
+    public Observable<List<Thread>> transform(String body) throws IOException {
+        Document document= Jsoup.parse(body);
         List<Thread> threads=new ArrayList<>();
         return Observable.from(threads).toList();
     }

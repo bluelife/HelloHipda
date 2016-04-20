@@ -1,5 +1,7 @@
 package com.bluelife.mm.hipdaforum.boards;
 
+import com.bluelife.mm.hipdaforum.boards.usecase.GetBoards;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -19,4 +21,6 @@ public class BoardsFragmentModule {
     BoardsContract.View provideView(){
         return view;
     }
+    /*@Provides
+    BoardsPresent provideBoardspresent(BoardsPresent present){return present;};*/
 }

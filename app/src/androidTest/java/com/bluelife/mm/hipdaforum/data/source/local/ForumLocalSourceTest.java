@@ -23,6 +23,7 @@ import rx.Subscription;
 import rx.observers.TestSubscriber;
 import rx.schedulers.Schedulers;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 /**
@@ -57,13 +58,24 @@ public class ForumLocalSourceTest {
         forumLocalSource.saveBoard(board1);
         forumLocalSource.saveBoard(board2);
         Observable<List<Board>> observable=forumLocalSource.getBoards();
-        TestSubscriber<Board> testSubscriber=new TestSubscriber<>();
-        getBoards().flatMap(Observable::from).subscribe(testSubscriber);
-        testSubscriber.assertNoErrors();
-        List<Board> boards=testSubscriber.getOnNextEvents();
+        List<Board> boards=observable.toBlocking().first();
+
         assertTrue(boards.size()>=2);
         assertTrue(boards.contains(board1));
         assertTrue(boards.contains(board2));
+    }
+    @Test
+    public void testEmptyBoards() throws Exception{
+        Observable<List<Board>> observable=forumLocalSource.getBoards();
+        List<Board> boards=new ArrayList<>();
+        final Board board1=Board.create(1,"url","name1","exp1","2");
+        final Board board2=Board.create(2,"url","name2","exp2","4");
+        boards.add(board1);
+        boards.add(board2);
+        Observable<List<Board>> observable1=Observable.just(boards);
+        Observable<List<Board>> concat=Observable.concat(observable,observable1).first();
+        List<Board> boardList=concat.toBlocking().first();
+        assertThat(boardList.size(),is(2));
     }
     private Observable<List<Board>> getBoards(){
         List<Board> boards=new ArrayList<>();
