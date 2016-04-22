@@ -17,7 +17,7 @@ import rx.android.schedulers.AndroidSchedulers;
 @FragmentScope
 public class UIThread implements PostExecutionThread {
     @Inject
-    UIThread(){
+    public UIThread(){
 
     }
     @Override

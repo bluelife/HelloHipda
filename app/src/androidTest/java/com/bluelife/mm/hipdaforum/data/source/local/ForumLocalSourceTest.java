@@ -48,7 +48,7 @@ public class ForumLocalSourceTest {
     @After
     public void tearDown() throws Exception {
 
-        briteDatabase.delete(Board.TABLE_NAME,null,null);
+        briteDatabase.delete(Board.TABLE_NAME,null,new String[]{});
     }
 
     @Test

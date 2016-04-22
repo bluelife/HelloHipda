@@ -16,11 +16,11 @@ import rx.Observable;
  */
 public class GetBoards extends UseCase<GetBoards.RequestValues> {
 
-    @Inject
     ForumRepository forumRepository;
     @Inject
-    public GetBoards(JobExecutor threadExecutor, UIThread postExecutionThread) {
+    public GetBoards(JobExecutor threadExecutor, UIThread postExecutionThread,ForumRepository forumRepository) {
         super(threadExecutor, postExecutionThread);
+        this.forumRepository=forumRepository;
     }
 
 

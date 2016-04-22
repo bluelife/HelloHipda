@@ -33,6 +33,7 @@ public class ForumLocalSource implements ForumDataSource {
     }
     @Override
     public Observable<List<Board>> getBoards() {
+        Log.w("ssss",briteDatabase+"");
         Observable<List<Board>> boards=briteDatabase.createQuery(Board.TABLE_NAME,Board.SELECT_ALL).mapToList(Board.CURSOR_MAPPER);
         if(boards.toBlocking().first().size()==0){
             return Observable.empty();

@@ -44,6 +44,7 @@ public class ForumRepository implements ForumDataSource {
                     forumLocalSource.saveBoard(board);
                     System.out.println("dddd");
                 }).toList();
+        Log.w("ssss","getboards");
         return Observable.concat(cachedBoradsObservable,localBoards,remoteBoardsWithLocalUpdate).first();
         //return remoteBoardsWithLocalUpdate;
     }

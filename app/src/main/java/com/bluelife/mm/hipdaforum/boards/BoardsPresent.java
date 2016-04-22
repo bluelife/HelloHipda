@@ -51,6 +51,7 @@ public class BoardsPresent implements BoardsContract.Present {
 
         @Override
         public void onNext(List<Board> boards) {
+            view.hideProgress();
             view.showBoards(boards);
         }
 
