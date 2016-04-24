@@ -2,6 +2,7 @@ package com.bluelife.mm.hipdaforum.data.source;
 
 import android.util.Log;
 
+import com.bluelife.mm.hipdaforum.ApplicationScope;
 import com.bluelife.mm.hipdaforum.data.Board;
 import com.bluelife.mm.hipdaforum.data.Thread;
 
@@ -16,7 +17,7 @@ import rx.Observable;
 /**
  * Created by slomka.jin on 2016/4/8.
  */
-@Singleton
+@ApplicationScope
 public class ForumRepository implements ForumDataSource {
 
     private final ForumDataSource forumLocalSource;
@@ -35,7 +36,7 @@ public class ForumRepository implements ForumDataSource {
 
     @Override
     public Observable<List<Board>> getBoards() {
-        Observable<List<Board>> cachedBoradsObservable=cachedBoards.size()==0?Observable.empty():Observable.from(cachedBoards).toList();
+        Observable<List<Board>> cachedBoradsObservable=cachedBoards.size()==0?Observable.empty():Observable.just(cachedBoards);
         Observable<List<Board>> localBoards=forumLocalSource.getBoards();
         Observable<List<Board>> remoteBoards=forumRemoteSource.getBoards();
         Observable<List<Board>> remoteBoardsWithLocalUpdate=remoteBoards
@@ -44,7 +45,7 @@ public class ForumRepository implements ForumDataSource {
                     forumLocalSource.saveBoard(board);
                     System.out.println("dddd");
                 }).toList();
-        Log.w("ssss","getboards");
+        Log.w("ssssrr",cachedBoards.size()+"");
         return Observable.concat(cachedBoradsObservable,localBoards,remoteBoardsWithLocalUpdate).first();
         //return remoteBoardsWithLocalUpdate;
     }
@@ -55,10 +56,10 @@ public class ForumRepository implements ForumDataSource {
     }
 
     @Override
-    public Observable<List<Thread>> getThreads() {
+    public Observable<List<Thread>> getThreads(String id) {
         Observable<List<Thread>> cachedThreadList=Observable.from(cachedThreads).toList();
-        Observable<List<Thread>> localThreads=forumLocalSource.getThreads();
-        Observable<List<Thread>> remoteThreads=forumRemoteSource.getThreads();
+        Observable<List<Thread>> localThreads=forumLocalSource.getThreads(id);
+        Observable<List<Thread>> remoteThreads=forumRemoteSource.getThreads(id);
         Observable<List<Thread>> remoteThreadsWithLocalUpdate=remoteThreads
                 .flatMap(Observable::from).doOnNext(thread -> {
                     cachedThreads.add(thread);

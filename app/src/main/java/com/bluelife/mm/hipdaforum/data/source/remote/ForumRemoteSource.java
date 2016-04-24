@@ -1,11 +1,16 @@
 package com.bluelife.mm.hipdaforum.data.source.remote;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.bluelife.mm.hipdaforum.ApplicationScope;
 import com.bluelife.mm.hipdaforum.data.Board;
 import com.bluelife.mm.hipdaforum.data.Thread;
 import com.bluelife.mm.hipdaforum.data.source.ForumDataSource;
 import com.bluelife.mm.hipdaforum.data.source.mapper.BoardsMapper;
+import com.bluelife.mm.hipdaforum.data.source.mapper.DataMapper;
+import com.bluelife.mm.hipdaforum.data.source.mapper.MapperFactory;
+import com.bluelife.mm.hipdaforum.data.source.mapper.MapperType;
 import com.bluelife.mm.hipdaforum.data.source.mapper.ThreadMapper;
 import com.bluelife.mm.hipdaforum.utils.StringFormat;
 
@@ -23,34 +28,35 @@ import rx.functions.Func1;
 /**
  * Created by slomka.jin on 2016/4/8.
  */
-@Singleton
+@ApplicationScope
 public class ForumRemoteSource implements ForumDataSource {
-
-    @Inject
-    BoardsMapper boardsMapper;
-    @Inject
-    ThreadMapper threadMapper;
-
-    @Inject
+    //@Inject
     ForumService forumService;
 
     @Inject
-    public ForumRemoteSource(Context context){
-
+    public ForumRemoteSource(Context context,ForumService service){
+        forumService=service;
     }
     @Override
     public Observable<List<Board>> getBoards() {
-        Observable<List<Board>> boards=forumService.getForumApi().getBoards()
+
+       /* Observable<List<Board>> boards=forumService.getForumApi().getBoards()
                 .flatMap(body -> {
                     try {
+
                         String html=StringFormat.fromGBK(body);
+                        Log.w("ssss",html);
                         return boardsMapper.transform(html);
                     } catch (IOException e) {
                         e.printStackTrace();
                         return Observable.error(e);
                     }
-                });
-        return boards;
+                    catch (Exception e){
+                        e.printStackTrace();
+                        return Observable.error(e);
+                    }
+                });*/
+        return getSource(forumService.getForumApi().getBoards(), MapperFactory.create(MapperType.BOARD));
     }
 
     @Override
@@ -59,18 +65,22 @@ public class ForumRemoteSource implements ForumDataSource {
     }
 
     @Override
-    public Observable<List<Thread>> getThreads() {
-        Observable<List<Thread>> threads=forumService.getForumApi().getThreads()
-                .flatMap(body -> {
-                    try {
-                        String html=StringFormat.fromGBK(body);
-                        return threadMapper.transform(html);
-                    }
-                    catch (IOException e){
-                        e.printStackTrace();
-                        return Observable.error(e);
-                    }
-                });
-        return threads;
+    public Observable<List<Thread>> getThreads(String id) {
+        return getSource(forumService.getForumApi().getThreads(id),MapperFactory.create(MapperType.THREAD));
+    }
+
+    private <T> Observable<T> getSource(Observable<ResponseBody> observable, DataMapper<T> mapper){
+        Observable<T> resultObservable=observable.flatMap(responseBody -> {
+            try {
+                String html=StringFormat.fromGBK(responseBody);
+                return mapper.transform(html);
+            }
+            catch (IOException e){
+                e.printStackTrace();
+                return Observable.error(e);
+            }
+
+        });
+        return resultObservable;
     }
 }

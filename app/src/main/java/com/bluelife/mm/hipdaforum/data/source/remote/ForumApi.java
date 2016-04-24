@@ -6,6 +6,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -22,6 +23,6 @@ public interface ForumApi {
     @GET("index.php")
     Observable<ResponseBody> getBoards();
 
-    @GET("")
-    Observable<ResponseBody> getThreads();
+    @GET("forumdisplay.php")
+    Observable<ResponseBody> getThreads(@Query("fid") String fid);
 }

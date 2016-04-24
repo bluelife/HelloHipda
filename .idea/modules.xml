@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/HipdaForum.iml" filepath="$PROJECT_DIR$/HipdaForum.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HelloHipda.iml" filepath="$PROJECT_DIR$/HelloHipda.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

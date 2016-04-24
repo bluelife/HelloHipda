@@ -20,6 +20,14 @@ import butterknife.ButterKnife;
  */
 public class BoardListAdapter extends RecyclerView.Adapter<BoardListAdapter.BoardViewHolder> {
     private List<Board> boards=new ArrayList<>();
+    private final OnItemClickListener itemClickListener;
+    BoardListAdapter(OnItemClickListener listener){
+        itemClickListener=listener;
+    }
+    public interface OnItemClickListener {
+        void onItemClick(Board item);
+    }
+
     @Override
     public BoardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.board_list_item,parent,false);
@@ -29,7 +37,7 @@ public class BoardListAdapter extends RecyclerView.Adapter<BoardListAdapter.Boar
 
     @Override
     public void onBindViewHolder(BoardViewHolder holder, int position) {
-        holder.bind(boards.get(position));
+        holder.bind(boards.get(position),itemClickListener);
     }
     public void setBoards(List<Board> boardList){
         boards=boardList;
@@ -51,9 +59,10 @@ public class BoardListAdapter extends RecyclerView.Adapter<BoardListAdapter.Boar
             ButterKnife.bind(this,itemView);
         }
 
-        public void bind(Board board){
+        public void bind(Board board,final OnItemClickListener clickListener){
             boardName.setText(board.name());
             boardExp.setText(board.exp());
+            itemView.setOnClickListener(v -> clickListener.onItemClick(board));
         }
     }
 }

@@ -48,6 +48,7 @@ public class BoardsFragment extends Fragment implements BoardsContract.View{
     }
     @Override
     public void onResume() {
+        super.onResume();
         present.loadBoards(true);
     }
 
@@ -75,14 +76,16 @@ public class BoardsFragment extends Fragment implements BoardsContract.View{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        present=DaggerBoardFragmentComponent.builder().boardsFragmentModule(new BoardsFragmentModule(this))
-                .dbComponent(DaggerDbComponent.builder().dbModule(new DbModule()).build())
-                .forumRepositoryComponent(((HipdaApp)getActivity().getApplication()).getForumRepositoryComponent())
+        present=DaggerBoardFragmentComponent.builder()
+                .applicationComponent(((HipdaApp)getContext().getApplicationContext()).getApplicationComponent())
+                .dbComponent(DaggerDbComponent.builder().build())
+                .boardsFragmentModule(new BoardsFragmentModule(this))
                 .build()
                 .getBoardsPresent();
         LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
+        loadErrorLayout.setVisibility(View.GONE);
         boardsListView.setLayoutManager(layoutManager);
-        boardListAdapter=new BoardListAdapter();
+        boardListAdapter=new BoardListAdapter(new ItemClickListener());
         boardsListView.setAdapter(boardListAdapter);
     }
 
@@ -105,5 +108,13 @@ public class BoardsFragment extends Fragment implements BoardsContract.View{
     public void showLoadingError(String error) {
         loadErrorLayout.setVisibility(View.VISIBLE);
         errorText.setText(error);
+    }
+
+    private class ItemClickListener implements BoardListAdapter.OnItemClickListener{
+
+        @Override
+        public void onItemClick(Board item) {
+
+        }
     }
 }

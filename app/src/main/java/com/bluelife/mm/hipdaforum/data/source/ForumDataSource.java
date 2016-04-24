@@ -14,7 +14,7 @@ public interface ForumDataSource {
 
     Observable<List<Board>> getBoards();
 
-    Observable<List<Thread>> getThreads();
+    Observable<List<Thread>> getThreads(String id);
 
     void saveBoard(Board board);
 

@@ -1,5 +1,6 @@
 package com.bluelife.mm.hipdaforum;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.bluelife.mm.hipdaforum.data.source.ForumRepository;
@@ -16,14 +17,15 @@ import dagger.Provides;
 @Module
 public final class ApplicationModule {
 
-    private final Context mContext;
+    private final HipdaApp mContext;
 
-    ApplicationModule(Context context) {
+    ApplicationModule(HipdaApp context) {
         mContext = context;
     }
 
     @Provides
-    Context provideApp() {
+    @ApplicationScope
+    Application provideApp() {
         return mContext;
     }
 

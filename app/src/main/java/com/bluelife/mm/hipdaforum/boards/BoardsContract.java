@@ -20,5 +20,6 @@ public interface BoardsContract {
 
     interface Present extends BasePresenter{
         void loadBoards(boolean forceUpdate);
+        void openThread(Board board);
     }
 }

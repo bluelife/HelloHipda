@@ -15,7 +15,6 @@ import rx.functions.Func1;
 public abstract class Board implements BoardModel{
     public static final Mapper<Board> MAPPER=new Mapper<>(AutoValue_Board::new);
     public static final Func1<Cursor,Board> CURSOR_MAPPER= cursor -> {
-        Log.w("rrr",cursor.getCount()+"");
         return MAPPER.map(cursor);
     };
 

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import okhttp3.ResponseBody;
 import rx.Observable;
 
@@ -21,6 +23,10 @@ import rx.Observable;
  * Created by slomka.jin on 2016/4/12.
  */
 public class BoardsMapper implements DataMapper<List<Board>> {
+    @Inject
+    public BoardsMapper(){
+
+    }
     @Override
     public Observable<List<Board>> transform(String body) throws IOException{
 
@@ -37,11 +43,12 @@ public class BoardsMapper implements DataMapper<List<Board>> {
                 Element board=boards.get(j);
                 String title=board.select("h2 a").text();
                 String url=board.select("h2 a").attr("href");
-                String exp=board.select("p").text();
+                String exp=board.select("div[class=left] p").text();
                 String nums=board.select("td[class=forumnums]").text();
                 String count=board.select("h2 em strong").text();
                 Board boardItem=Board.create(j,url,title,exp,count);
                 boardList.add(boardItem);
+
             }
         }
         return Observable.just(boardList);

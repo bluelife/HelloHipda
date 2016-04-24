@@ -41,8 +41,8 @@ public class ForumLocalSourceTest {
         SqlBrite sqlBrite=SqlBrite.create();
         DbOpenHelper dbOpenHelper=new DbOpenHelper(InstrumentationRegistry.getTargetContext());
         briteDatabase=sqlBrite.wrapDatabaseHelper(dbOpenHelper, Schedulers.io());
-        forumLocalSource=new ForumLocalSource();
-        forumLocalSource.briteDatabase=briteDatabase;
+        forumLocalSource=new ForumLocalSource(briteDatabase);
+        //forumLocalSource.briteDatabase=briteDatabase;
     }
 
     @After

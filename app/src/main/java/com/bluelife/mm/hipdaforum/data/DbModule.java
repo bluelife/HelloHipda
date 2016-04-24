@@ -3,6 +3,7 @@ package com.bluelife.mm.hipdaforum.data;
 import android.app.Application;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.bluelife.mm.hipdaforum.ApplicationScope;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -19,13 +20,13 @@ import timber.log.Timber;
 @Module
 public class DbModule {
     @Provides
-    @Singleton
+    @ApplicationScope
     SQLiteOpenHelper provideOpenHelper(Application application){
         return new DbOpenHelper(application);
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     SqlBrite provideSqlBrite(){
         return SqlBrite.create(new SqlBrite.Logger() {
             @Override
@@ -36,7 +37,7 @@ public class DbModule {
 
     }
     @Provides
-    @Singleton
+    @ApplicationScope
     BriteDatabase provideDatabase(SqlBrite sqlBrite,SQLiteOpenHelper helper){
         BriteDatabase database=sqlBrite.wrapDatabaseHelper(helper, Schedulers.io());
         database.setLoggingEnabled(true);

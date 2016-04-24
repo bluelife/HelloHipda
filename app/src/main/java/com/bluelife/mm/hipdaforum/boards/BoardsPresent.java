@@ -1,5 +1,7 @@
 package com.bluelife.mm.hipdaforum.boards;
 
+import android.util.Log;
+
 import com.bluelife.mm.hipdaforum.DefaultSubscriber;
 import com.bluelife.mm.hipdaforum.boards.usecase.GetBoards;
 import com.bluelife.mm.hipdaforum.data.Board;
@@ -31,6 +33,11 @@ public class BoardsPresent implements BoardsContract.Present {
     public void loadBoards(boolean forceUpdate) {
         view.showProgress();
         getBoards.run(new BoardsSubscriber());
+    }
+
+    @Override
+    public void openThread(Board board) {
+
     }
 
     @Override

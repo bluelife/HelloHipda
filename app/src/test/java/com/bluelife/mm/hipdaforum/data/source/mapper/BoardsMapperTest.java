@@ -26,6 +26,7 @@ public class BoardsMapperTest {
         Observable<List<Board>> observable=mapper.transform(txt);
         List<Board> boards=observable.toBlocking().first();
         Board board=boards.get(0);
+        System.out.println(board.exp()+" "+board.name()+" "+board.postCountDay());
         assertThat(boards.size(),is(16));
         assertThat(board.url(),equalTo("forumdisplay.php?fid=5"));
     }

@@ -3,6 +3,7 @@ package com.bluelife.mm.hipdaforum.data.source.local;
 import android.content.Context;
 import android.util.Log;
 
+import com.bluelife.mm.hipdaforum.ApplicationScope;
 import com.bluelife.mm.hipdaforum.data.Board;
 import com.bluelife.mm.hipdaforum.data.Thread;
 import com.bluelife.mm.hipdaforum.data.source.ForumDataSource;
@@ -22,14 +23,14 @@ import rx.functions.Func1;
 /**
  * Created by slomka.jin on 2016/4/8.
  */
-@Singleton
+@ApplicationScope
 public class ForumLocalSource implements ForumDataSource {
 
-    @Inject
+    //@Inject
     BriteDatabase briteDatabase;
     @Inject
-    public ForumLocalSource(){
-
+    public ForumLocalSource(BriteDatabase database){
+        briteDatabase=database;
     }
     @Override
     public Observable<List<Board>> getBoards() {
@@ -49,7 +50,7 @@ public class ForumLocalSource implements ForumDataSource {
     }
 
     @Override
-    public Observable<List<Thread>> getThreads() {
+    public Observable<List<Thread>> getThreads(String id) {
         return null;
     }
 }
